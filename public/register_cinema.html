@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/upload_movie.css">
+  </head>
+  <body>
+      
+      <form id="cineForm" class="create">        
+        <div class = "info-container">
+          <p><input type="text" placeholder="nombre" required name="name" id="name"></p>
+          <p><input type="text" placeholder="Ubicacion" required name="location" id="location"></p>
+          <p><input type="number" placeholder="Numero de contacto" name="contact" id="contact"></p>
+        </div>
+
+        <p><input type="submit" value="Crear cine"></p>
+      </form>
+
+    <script>
+      document.getElementById('cineForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        const jsonPayload = {
+          name: document.getElementById('name').value,
+          location: document.getElementById('location').value,
+          contact: document.getElementById('contact').value
+        };
+
+        try {
+          const response = await fetch('http://localhost:3000/cinema-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonPayload),
+        });
+        
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert('theater uploaded successfully!');
+            console.log(result); // Log the response from the server
+          } else {
+            alert('Error uploading theater');
+            console.error(result);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error uploading theater');
+        }
+      });
+    </script>
+  </body>
+</HTML>

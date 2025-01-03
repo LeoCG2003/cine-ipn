@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form | Project</title>
+  <link rel="stylesheet" href="../src/styles/admin_styles.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+</head>
+
+<header>
+  <p>Proyecto Cine</p>
+  <p>Tlaxcala de Xicohténcatl, Tlaxcala.</p>
+</header>
+<body>
+  <div class="wrapper">
+    <form id="OwnerForm">
+      <p id="admin_name">Leonel Carrillo Gutierrez</p>
+      <button type="button" id="btn1" class="btn">Registrar administrador</button>
+      <button type="button" id="btn2" class="btn">Registrar cine</button>
+    </form>
+
+    <!-- Placeholder for dynamically loaded content -->
+    <div id="dynamicContent"></div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn1").click(function () {
+        console.log('bnt1')
+        $("#dynamicContent").load("Register_admin.html");
+      });
+    });
+
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn2").click(function () {
+        console.log('btn2')
+        $("#dynamicContent").load("Register_cinema.html");
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Main Container */
+.create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+}
+
+/* Content Wrapper (Dropzone + Form Side by Side) */
+.content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropzone Styling */
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eaeaeabd;
+    border: 2px dashed #000000;
+    border-radius: 10px;
+    width: 300px;
+    height: 400px;
+    text-align: center;
+}
+
+#img_view img {
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+/* Form Styling */
+.info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+}
+
+.info-container input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.info-container input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.info-container input[type="submit"]:hover {
+    background-color: #0056b3;
+}

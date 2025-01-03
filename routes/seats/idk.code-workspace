@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../PlatformIO/Projects/myfristTest"
+		},
+		{
+			"name": "hello_world",
+			"path": "../../../../../PlatformIO/Projects/hello_world"
+		},
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../WedDev"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "cuarto semestre"
+	}
+}

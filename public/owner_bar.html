@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form | project</title>
+  <link rel="stylesheet" href="../src/styles/ver.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class = "wrapper">
+ 
+        <form id="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+            <p><input type="email" placeholder="Ingrese Email" required name="email" id = 'email'></p>
+            <i class='bx bxs-user'></i>
+        </div>
+        <div class="input-box">
+            <p><input type="password" placeholder="Password" required name="Password" id = 'Password'></p>
+            <i class='bx bxs-lock-alt' ></i>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="register-link">
+        </div>
+        </form>
+    </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+      
+        const email = document.getElementById('email').value;
+        const Password = document.getElementById('Password').value;
+        console.log('try');
+
+      
+        try {
+          const response = await fetch('http://localhost:3000/owner-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, Password }), // Send JSON
+          });
+      
+          const result = await response.json();
+      
+          if (response.ok) {
+            console.log(result); // Log the response from the server
+            window.location.href = "./owner_dashboard.html";
+
+          } else {
+            alert('Invalid credentials');
+            console.error(result);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred');
+        }
+      });
+        
+  </script>
+</body>
+</html>

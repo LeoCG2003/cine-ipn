@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/upload_movie.css">
+  </head>
+  <body>
+      
+      <form id="movieForm" class="create">
+        <div class="dropzone">
+          <label for="imgUpload" id="drop-area">
+            <input type="file" accept="image/*" id="imgUpload" hidden name="image">
+
+            <div id="img_view">
+              <img src="../src/images/upload_logo.png" alt="Upload Logo">
+            </div>
+            <p>Drag and drop an image here, or click to upload</p>
+          </label>
+        </div>
+        
+        <div class = "info-container">
+          <p><input type="text" placeholder="nombre" required name="name" id="name"></p>
+          <p><input type="text" placeholder="sinopsis" required name="sinopsis" id="sinopsis"></p>
+          <p><input type="text" placeholder="genero" required name="gender" id="gender"></p>
+          <p><input type="text" placeholder="lenguaje" required name="language" id="language"></p>
+          <p><input type="text" placeholder="subtitulos" required name="subtitles" id="subtitles"></p>
+          <p><input type="text" placeholder="director" required name="director" id="director"></p>
+          <p><input type="text" placeholder="estudio" required name="studio" id="studio"></p>
+          <p><input type="number" placeholder="año de lanzamiento" required name="year" id="year"></p>
+          <p><input type="number" placeholder="duracion de la pelicula" required name="duration" id="duration"></p>
+        </div>
+
+        <p><input type="submit" value="Crear pelicula"></p>
+      </form>
+
+    <script>
+      document.getElementById('movieForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData(document.getElementById('movieForm'));
+
+        console.log(formData);
+
+        try {
+          const response = await fetch('http://localhost:3000/upload-movie', {
+            method: 'POST',
+            body: formData,
+        });
+        
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert('Movie uploaded successfully!');
+            console.log(result); // Log the response from the server
+          } else {
+            alert('Error uploading movie');
+            console.error(result);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error uploading movie');
+        }
+      });
+    </script>
+  </body>
+</HTML>

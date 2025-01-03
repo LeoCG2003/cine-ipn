@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/upload_movie.css">
+  </head>
+  <body>
+    <div class="create">
+      
+      <form id="funcion" class="info-container">
+        <p><input type="text" placeholder="Pelicula" required name="movie" id="movie"></p>
+        <p><input type="text" placeholder="Sala" required name="theater" id="teather"></p>
+        <p><input type="datetime-local" placeholder="Ingresa la hora de inicio" required name="time" id="time" min = "2024/11/21 12:00"></p>
+        <p><input type="submit" value="Crear Funcion"></p>
+      </form>
+    </div>
+
+    <script>
+      console.log(time);
+      document.getElementById('funcion').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData(this); // Get form data
+        console.log(formData);
+
+        try {
+          const response = await fetch('http://localhost:3000/uploadMovie', {
+            method: 'POST',
+            body: formData,
+          });
+          
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert('Movie uploaded successfully!');
+            console.log(result); // Log the response from the server
+          } else {
+            alert('Error uploading movie');
+            console.error(result);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error uploading movie');
+        }
+      });
+    </script>
+  </body>
+</HTML>

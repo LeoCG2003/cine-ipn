@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/upload_movie.css">
+  </head>
+  <body>
+      
+
+                  <form id="AdminForm" class="create">        
+                    <div class="info-container">
+                      <p>
+                        <div>
+                          <label for="cinemas">Cinema</label>
+                          <div>
+                            <label for="cinemas">Cinema</label>
+                            <select name="cinemas" id="cinemas" multiple>
+                              <!-- Options will be dynamically populated -->
+                            </select>
+                          </div>
+                        </div>
+                      </p>
+                      <p><input type="text" placeholder="Nombre" required name="name" id="name"></p>
+                      <p><input type="text" placeholder="Nombre de usuario" required name="user" id="user"></p>
+                      <p><input type="text" placeholder="Email" required name="email" id="email"></p>
+                    </div>
+                    
+                    <p><input type="submit" value="Registrar administrador"></p>
+
+                  <script>
+                    // Fetch cinemas and populate the select element
+                    async function populateCinemas() {
+                      try {
+                        const response = await fetch('http://localhost:3000/cinemas');
+                        if (!response.ok) {
+                          throw new Error('Failed to fetch cinemas');
+                        }
+                  
+                        const cinemas = await response.json();
+                        const cinemaSelect = document.getElementById('cinemas');
+                  
+                        // Clear any existing options (if needed)
+                        cinemaSelect.innerHTML = '';
+                  
+                        // Add options dynamically
+                        cinemas.forEach(cinema => {
+                          const option = document.createElement('option');
+                          option.value = cinema.name; // Use unique identifier if available (e.g., cinema._id)
+                          option.textContent = cinema.name;
+                          cinemaSelect.appendChild(option);
+                        });
+                      } catch (error) {
+                        console.error('Error populating cinemas:', error);
+                      }
+                    }
+                  
+                    // Call the function to populate cinemas
+                    populateCinemas();
+                  </script>
+               </div>
+            </p>
+      </form>
+
+    <script>
+          
+          document.getElementById('AdminForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent the default form submission
+          
+            // Find selected cinema ID
+            const cinemaName = document.getElementById('cinema').value;
+            const selectedCinema = Array.from(document.querySelectorAll('#cinemaList option'))
+              .find(option => option.value === cinemaName);
+          
+            if (!selectedCinema) {
+              alert('Please select a valid cinema from the list.');
+              return;
+            }
+            /* Function to generate combination of password */
+            function generatePass() {
+                let pass = '';
+                let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+                    'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+                for (let i = 1; i <= 10; i++) {
+                    let char = Math.floor(Math.random()
+                        * str.length + 1);
+
+                    pass += str.charAt(char)
+                }
+
+                return pass;
+            }
+
+            admin_password = generatePass();
+            console.log(admin_password);
+          
+            const jsonPayload = {
+              cinemaId: selectedCinema.dataset.id, // Use cinema ID, not name
+              name: document.getElementById('name').value,
+              user: document.getElementById('user').value,
+              email: document.getElementById('email').value,
+              Password: admin_password,
+            };
+          
+            try {
+              const response = await fetch('http://localhost:3000/admin-data', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonPayload),
+              });
+          
+              const result = await response.json();
+          
+              if (response.ok) {
+                alert('Admin information uploaded successfully!');
+                console.log(result); // Log the response from the server
+              } else {
+                alert('Error uploading admin information');
+                console.error(result);
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert('Error uploading admin information');
+            }
+          });
+          
+    </script>
+  </body>
+</HTML>

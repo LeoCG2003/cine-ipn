@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form | Project</title>
+  <link rel="stylesheet" href="../src/styles/admin_styles.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+</head>
+
+
+<body>
+
+  <div class="wrapper">
+    <form id="loginForm">
+      <p id="admin_name">Leonel Carrillo Gutierrez</p>
+      <button type="button" id="btn1" class="btn">Subir película</button>
+      <div>
+        <label for= 'cine'> cinema </label>
+        <select name="cinemas" id="cinemas" multiple>
+  
+          <option value="1">oaueo</option>
+  
+          <script>
+  
+          </script>
+  
+        </select>
+  
+       </div>
+    </form>
+
+    <!-- Placeholder for dynamically loaded content -->
+    <div id="dynamicContent"></div>
+    <div>
+      <label for= 'cine'> cinema </label>
+      <select name="cinemas" id="cinemas" multiple>
+
+        <option value="1">oaueo</option>
+
+        <script>
+
+        </script>
+
+      </select>
+
+     </div>
+    
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn1").click(async function () {
+        try {
+          const jsonPayload = { /* Add your payload here */ };
+          const response = await fetch('http://localhost:3000/test', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonPayload),
+          });
+      
+          const result = await response.json();
+      
+          if (response.ok) {
+            alert('Theater uploaded successfully!');
+            console.log(result); // Log the response from the server
+          } else {
+            alert('Error uploading theater');
+            console.error(result);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error uploading theater');
+        }
+      });
+      
+    });
+  </script>
+</body>
+</html>
