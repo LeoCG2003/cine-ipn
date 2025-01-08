@@ -20,22 +20,70 @@
           </label>
         </div>
         
-        <div class = "info-container">
+        <div class="info-container">
           <p><input type="text" placeholder="nombre" required name="name" id="name"></p>
           <p><input type="text" placeholder="sinopsis" required name="sinopsis" id="sinopsis"></p>
-          <p><input type="text" placeholder="genero" required name="gender" id="gender"></p>
-          <p><input type="text" placeholder="lenguaje" required name="language" id="language"></p>
-          <p><input type="text" placeholder="subtitulos" required name="subtitles" id="subtitles"></p>
+          <p>
+            <select required name="gender" id="gender">
+              <option value="" disabled selected>Selecciona un género</option>
+            </select>
+          </p>
+          <p>
+            <select required name="language" id="language">
+              <option value="" disabled selected>Selecciona un lenguaje</option>
+            </select>
+          </p>
+          <p>
+            <select required name="subtitles" id="subtitles">
+              <option value="" disabled selected>Selecciona los subtítulos</option>
+            </select>
+          </p>
+          <p>
+            <select required name="classification" id="classification">
+              <option value="" disabled selected>Selecciona una clasificación</option>
+            </select>
+          </p>
           <p><input type="text" placeholder="director" required name="director" id="director"></p>
           <p><input type="text" placeholder="estudio" required name="studio" id="studio"></p>
           <p><input type="number" placeholder="año de lanzamiento" required name="year" id="year"></p>
           <p><input type="number" placeholder="duracion de la pelicula" required name="duration" id="duration"></p>
         </div>
+        
 
         <p><input type="submit" value="Crear pelicula"></p>
+        
       </form>
 
     <script>
+      async function populateDropdown(endpoint, elementId) {
+        try {
+          const response = await fetch(`http://localhost:3000/${endpoint}`);
+          const data = await response.json();
+      
+          if (response.ok) {
+            const dropdown = document.getElementById(elementId);
+            data.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item.nombre;
+              option.textContent = item.nombre;
+              dropdown.appendChild(option);
+            });
+          } else {
+            console.error(`Error fetching ${endpoint}:`, data);
+          }
+        } catch (error) {
+          console.error(`Error populating ${elementId}:`, error);
+        }
+      }
+      
+      // Call populateDropdown for each dropdown
+      populateDropdown('movie-info/languages', 'language');
+      populateDropdown('movie-info/languages', 'subtitles');
+      populateDropdown('movie-info/classifications', 'classification');
+      populateDropdown('movie-info/genders', 'gender');
+      
+
+      
       document.getElementById('movieForm').addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent the default form submission
 

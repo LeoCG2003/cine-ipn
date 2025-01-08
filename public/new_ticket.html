@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/upload_movie.css">
+  </head>
+  <body>
+    <div class="create">
+      
+      <form id="type" class="info-container">
+        <p><input type="text" placeholder="Tipo de boleto" required name="name" id="name"></p>
+        <p><input type="number" placeholder="Precio $MXN" required name="price" id="price"></p>
+
+        <p><input type="submit" value="submit_price"></p>
+      </form>
+    </div>
+
+    <script>
+        document.getElementById('type').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent the default form submission
+          
+            // Collect form data
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+          
+            try {
+              const response = await fetch('http://localhost:3000/ticket', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price }),
+              });
+          
+              const result = await response.json();
+          
+              if (response.ok) {
+                alert('Ticket uploaded successfully!');
+                console.log(result); // Log the response from the server
+              } else {
+                alert('Error uploading Ticket price');
+                console.error(result);
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert('Error uploading ticket');
+            }
+          });
+          
+    </script>
+  </body>
+</HTML>

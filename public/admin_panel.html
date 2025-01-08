@@ -24,6 +24,7 @@
       <button type="button" id="btn3" class="btn">Administrar funciones</button>
       <button type="button" id="btn4" class="btn">Editar funciones</button>
       <button type="button" id="btn5" class="btn">Crear sala</button>
+      <button type="button" id="btn6" class="btn">Crear nuevo boleto</button>
     </form>
 
     <!-- Placeholder for dynamically loaded content -->
@@ -44,6 +45,20 @@
       $("#btn2").click(function () {
         console.log('btn2')
         $("#dynamicContent").load("Crear_funcion.html");
+      });
+    });
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn5").click(function () {
+        console.log('btn5')
+        window.location.href = "../routes/seats/seats.html";
+      });
+    });
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn6").click(function () {
+        console.log('btn6')
+        $("#dynamicContent").load("new_ticket.html");
       });
     });
   </script>

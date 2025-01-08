@@ -9,41 +9,96 @@
   <body>
     <div class="create">
       
-      <form id="funcion" class="info-container">
-        <p><input type="text" placeholder="Pelicula" required name="movie" id="movie"></p>
-        <p><input type="text" placeholder="Sala" required name="theater" id="teather"></p>
-        <p><input type="datetime-local" placeholder="Ingresa la hora de inicio" required name="time" id="time" min = "2024/11/21 12:00"></p>
+      <form id="function" class="info-container">
+        <p>
+          <select type = 'Search' required name="movies" id="movies">
+            <option value="" disabled selected>Selecciona una película</option>
+          </select>
+        </p>
+        <p>
+          <select required name="tickets" id="tickets">
+            <option value="" disabled selected>Selecciona un precio de boleto</option>
+          </select>
+        </p>
+        <p>
+          <select required name="rooms" id="rooms">
+            <option value="" disabled selected>Selecciona una sala</option>
+          </select>
+        </p>
+        <p><input type="datetime-local" placeholder="Ingresa la hora de inicio" required name="time" id="time" ></p>
+        <p><input type="number" placeholder="Tiempo de espera" required name="wait" id="wait"></p>
+        <script>
+          var today = new Date().toISOString().slice(0, 16);
+
+          document.getElementsByName("time")[0].min = today;
+        </script>
+        
+
+
         <p><input type="submit" value="Crear Funcion"></p>
       </form>
     </div>
 
     <script>
-      console.log(time);
-      document.getElementById('funcion').addEventListener('submit', async function (e) {
-        e.preventDefault(); // Prevent the default form submission
 
-        const formData = new FormData(this); // Get form data
-        console.log(formData);
-
+      async function populateDropdown(endpoint, elementId) {
         try {
-          const response = await fetch('http://localhost:3000/uploadMovie', {
+          const response = await fetch(`http://localhost:3000/function-info/${endpoint}`);
+          const data = await response.json();
+      
+          if (response.ok) {
+            const dropdown = document.getElementById(elementId);
+            data.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item._id; // Use the database ID as the value
+              option.textContent = item.name; // Adjust based on the schema
+              dropdown.appendChild(option);
+            });
+          } else {
+            console.error(`Error fetching ${endpoint}:`, data);
+          }
+        } catch (error) {
+          console.error(`Error populating ${elementId}:`, error);
+        }
+      }
+      
+      // Populate dropdowns for Movies, Tickets, and Rooms
+      populateDropdown('movies', 'movies'); // Dropdown for Movies
+      populateDropdown('tickets', 'tickets'); // Dropdown for Ticket Prices
+      populateDropdown('rooms', 'rooms'); // Dropdown for Theater Rooms
+      
+
+      document.getElementById('function').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+      
+        // Collect form data
+        const name = document.getElementById('movies').value;
+        const price = document.getElementById('tickets').value;
+        const time = document.getElementById('time').value;
+        const room = document.getElementById('rooms').value;
+        const wait = document.getElementById('wait').value;
+      
+        try {
+          const response = await fetch('http://localhost:3000/Show', {
             method: 'POST',
-            body: formData,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, price, time, room, wait}),
           });
+      
           
 
           const result = await response.json();
 
           if (response.ok) {
-            alert('Movie uploaded successfully!');
+            alert('Show uploaded successfully!');
             console.log(result); // Log the response from the server
           } else {
-            alert('Error uploading movie');
+            alert('Error uploading show');
             console.error(result);
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Error uploading movie');
+          alert('Error uploading show');
         }
       });
     </script>
