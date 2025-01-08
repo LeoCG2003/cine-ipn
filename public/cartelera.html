@@ -7,67 +7,132 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    body {
-      background: #F9F9F9;
-      font-family: Arial, sans-serif;
+    /* Barra de navegación */
+    .navbar-custom {
+      background: linear-gradient(90deg, #4DBDEB, #DFEEEE);
+      color: #FFFFFF;
+      font-size: 16px;
     }
-    .movie-card {
+    .navbar-custom .navbar-brand {
+      font-weight: bold;
+      color: #FFE08C;
+    }
+    .navbar-custom .nav-link {
+      color: #FFFFFF;
+      transition: color 0.3s ease;
+    }
+    .navbar-custom .nav-link:hover {
+      color: #4DBDEB;
+    }
+    .navbar-custom .search-bar {
+      position: relative;
+      width: 100%;
+    }
+    .navbar-custom .form-control {
+      background-color: #DFEEEE;
+      color: #4DBDEB;
+      border-radius: 25px;
+      padding-left: 40px;
       border: none;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-custom .form-control:focus {
+      background-color: #FFFFFF;
+      box-shadow: 0 0 8px rgba(77, 189, 235, 0.8);
+      color: #4DBDEB;
+    }
+    .navbar-custom .search-bar .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #4DBDEB;
+    }
+  
+    /* Tarjetas de películas */
+    .movie-card {
+      background-color: #DFEEEE;
+      border-radius: 10px;
       overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .movie-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
     }
     .movie-card img {
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-      object-fit: cover;
+      width: 100%;
+      height: auto;
     }
     .movie-info {
       padding: 15px;
+      color: #4DBDEB;
     }
     .movie-title {
       font-size: 18px;
       font-weight: bold;
-      margin: 10px 0;
+      color: #1a5276;
+      margin-bottom: 10px;
     }
     .movie-meta {
-      color: #777;
       font-size: 14px;
-    }
-    .badge {
-      margin-right: 5px;
-    }
-    .btn-details {
-      margin-top: 10px;
+      color: #4DBDEB;
     }
     .movie-details {
       display: none;
       margin-top: 10px;
-      color: #555;
       font-size: 14px;
+      color: #154360;
     }
     .movie-details.show {
       display: block;
     }
     .btn-buy {
-      margin-top: 15px;
-      background-color: #FF5722;
-      color: #fff;
-      border: none;
+      display: block;
       width: 100%;
-      font-size: 16px;
+      margin-top: 10px;
+      background-color: #FFE08C;
+      color: #424949;
+      border: none;
+      border-radius: 20px;
       padding: 10px;
-      border-radius: 5px;
+      font-size: 14px;
+      text-transform: uppercase;
       transition: background-color 0.3s ease;
     }
     .btn-buy:hover {
-      background-color: #E64A19;
+      background-color: #FFD54F;
     }
   </style>
+  
 </head>
 <body>
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Cines Independientes</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="cartelera.html">Cartelera</a></li>
+          <li class="nav-item"><a class="nav-link" href="verification.html">Iniciar Sesión</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+        </ul>
+        <div class="input-group">
+          <input type="text" class="form-control" id="searchQuery" placeholder="Ingresa título o palabras clave">
+          <button class="btn btn-secondary" id="searchButton">Buscar</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido de la página -->
   <div class="container mt-5">
-    <h1 class="text-center mb-4">Cartelera de Películas</h1>
+    <h1 class="text-center text-white mb-4">Cartelera de Películas</h1>
     <div id="movies-container" class="row g-4"></div>
   </div>
 
@@ -111,7 +176,18 @@
 
           moviesContainer.appendChild(col);
         });
+ // Al hacer clic en el botón de buscar
+ $('#searchButton').click(function () {
+        const query = $('#searchQuery').val();
+        loadMovies(query); // Llama a la función para cargar las películas
+      });
 
+      // Opcional: al presionar Enter en el campo de búsqueda también realiza la búsqueda
+      $('#searchQuery').keypress(function (e) {
+        if (e.which === 13) {
+          $('#searchButton').click();
+        }
+      });
         // Agregar eventos para mostrar y ocultar detalles
         const buttons = document.querySelectorAll('.btn-details');
         buttons.forEach(button => {
@@ -129,8 +205,8 @@
       } catch (error) {
         console.error('Error al cargar las películas:', error);
       }
-    }
-
+    // Función para buscar películas
+}
     // Cargar las películas al cargar la página
     cargarPeliculas();
   </script>
