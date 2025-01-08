@@ -138,77 +138,93 @@
 
   <script>
     const apiUrl = 'http://localhost:3000/peliculas/movies'; // Cambiar al puerto correcto si es necesario
-
+    let allMovies = []; // Variable para almacenar todas las películas
+  
     async function cargarPeliculas() {
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        const movies = await response.json();
-
-        const moviesContainer = document.getElementById('movies-container');
-        movies.forEach(movie => {
-          const col = document.createElement('div');
-          col.className = 'col-md-4 col-lg-3';
-
-          const detailsId = `details-${movie.name.replace(/\s+/g, '-')}`;
-
-          col.innerHTML = `
-            <div class="card movie-card">
-              <img src="${movie.image || 'https://via.placeholder.com/300x450'}" alt="${movie.name}" class="card-img-top" height="300">
-              <div class="movie-info">
-                <h2 class="movie-title">${movie.name}</h2>
-                <p class="movie-meta">
-                  <span class="badge bg-success">${movie.rating || 'A'}</span>
-                  <span>${movie.duration || 120} mins</span>
-                </p>
-                <button class="btn btn-primary btn-details" data-details="${detailsId}">Ver detalles</button>
-                <div id="${detailsId}" class="movie-details">
-                  <p><strong>Director:</strong> ${movie.director || 'Desconocido'}</p>
-                  <p><strong>Año:</strong> ${movie.year || 'N/A'}</p>
-                  <p><strong>Sinopsis:</strong> ${movie.sinopsis || 'No disponible'}</p>
-                </div>
-                <button class="btn btn-buy">Comprar boletos</button>
-              </div>
-            </div>
-          `;
-
-          moviesContainer.appendChild(col);
-        });
- // Al hacer clic en el botón de buscar
- $('#searchButton').click(function () {
-        const query = $('#searchQuery').val();
-        loadMovies(query); // Llama a la función para cargar las películas
-      });
-
-      // Opcional: al presionar Enter en el campo de búsqueda también realiza la búsqueda
-      $('#searchQuery').keypress(function (e) {
-        if (e.which === 13) {
-          $('#searchButton').click();
-        }
-      });
-        // Agregar eventos para mostrar y ocultar detalles
-        const buttons = document.querySelectorAll('.btn-details');
-        buttons.forEach(button => {
-          const detailsId = button.getAttribute('data-details');
-          const detailsElement = document.getElementById(detailsId);
-
-          button.addEventListener('mouseover', () => {
-            detailsElement.classList.add('show');
-          });
-
-          button.addEventListener('mouseout', () => {
-            detailsElement.classList.remove('show');
-          });
-        });
+        allMovies = await response.json(); // Guardar todas las películas
+        mostrarPeliculas(allMovies); // Mostrar todas las películas inicialmente
       } catch (error) {
         console.error('Error al cargar las películas:', error);
       }
-    // Función para buscar películas
-}
+    }
+  
+    function mostrarPeliculas(movies) {
+      const moviesContainer = document.getElementById('movies-container');
+      moviesContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar las películas
+  
+      
+      movies.forEach(movie => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 col-lg-3';
+  
+        const detailsId = `details-${movie.name.replace(/\s+/g, '-')}`;
+  
+        col.innerHTML = `
+          <div class="card movie-card">
+            <img src="${movie.image || 'https://via.placeholder.com/300x450'}" alt="${movie.name}" class="card-img-top" height="300">
+            <div class="movie-info">
+              <h2 class="movie-title">${movie.name}</h2>
+              <p class="movie-meta">
+                <span class="badge bg-success">${movie.rating || 'A'}</span>
+                <span>${movie.duration || 120} mins</span>
+              </p>
+              <button class="btn btn-primary btn-details" data-details="${detailsId}">Ver detalles</button>
+              <div id="${detailsId}" class="movie-details">
+                <p><strong>Director:</strong> ${movie.director || 'Desconocido'}</p>
+                <p><strong>Año:</strong> ${movie.year || 'N/A'}</p>
+                <p><strong>Sinopsis:</strong> ${movie.sinopsis || 'No disponible'}</p>
+              </div>
+              <button class="btn btn-buy">Comprar boletos</button>
+            </div>
+          </div>
+        `;
+  
+        moviesContainer.appendChild(col);
+      });
+  
+      // Agregar eventos para mostrar y ocultar detalles
+      const buttons = document.querySelectorAll('.btn-details');
+      buttons.forEach(button => {
+        const detailsId = button.getAttribute('data-details');
+        const detailsElement = document.getElementById(detailsId);
+  
+        button.addEventListener('mouseover', () => {
+          detailsElement.classList.add('show');
+        });
+  
+        button.addEventListener('mouseout', () => {
+          detailsElement.classList.remove('show');
+        });
+      });
+    }
+  
+    function buscarPeliculas() {
+      const query = document.getElementById('searchQuery').value.toLowerCase();
+      const filteredMovies = allMovies.filter(movie =>
+        movie.name.toLowerCase().includes(query) || 
+        (movie.sinopsis && movie.sinopsis.toLowerCase().includes(query))
+      );
+      mostrarPeliculas(filteredMovies);
+    }
+  
+    // Escuchar el evento de clic en el botón de búsqueda
+    document.getElementById('searchButton').addEventListener('click', buscarPeliculas);
+  
+    // Escuchar el evento de presionar "Enter" en el input
+    document.getElementById('searchQuery').addEventListener('keyup', (event) => {
+      if (event.key === 'Enter') {
+        buscarPeliculas();
+      }
+    });
+  
     // Cargar las películas al cargar la página
     cargarPeliculas();
   </script>
+  
 </body>
 </html>
