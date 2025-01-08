@@ -11,6 +11,13 @@ const New_Cinema = require('./routes/NewCinema');
 const New_Admin = require('./routes/NewAdmin');
 const cinemasRouter = require('./routes/cinemas');
 const testing = require('./routes/test');
+const save_room = require('./routes/seats/save_seats');
+const info = require('./routes/movie_info');
+const getPeliculas = require('./routes/getPeliculas');
+const ticket = require('./routes/NewTicket');
+const function_info = require('./routes/function_info');
+const show = require('./routes/NewShow');
+
 
 const upload = multer();
 
@@ -39,7 +46,12 @@ app.use('/cinema-data', New_Cinema);
 app.use('/Admin-data', New_Admin);
 app.use('/cinemas', cinemasRouter);
 app.use('/test', testing);
-
+app.use('/save-seats', save_room);
+app.use('/movie-info', info);
+app.use('/peliculas',getPeliculas);
+app.use('/ticket', ticket);
+app.use('/function-info',function_info);
+app.use('/Show', show);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
