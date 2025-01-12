@@ -4,136 +4,170 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cartelera de Películas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="../src/components/navegation.js" defer></script>
+  <link rel="stylesheet" href="../src/styles/estilos_generales.css">
   <style>
-    /* Barra de navegación */
-    .navbar-custom {
-      background: linear-gradient(90deg, #4DBDEB, #DFEEEE);
-      color: #FFFFFF;
-      font-size: 16px;
-    }
-    .navbar-custom .navbar-brand {
-      font-weight: bold;
-      color: #FFE08C;
-    }
-    .navbar-custom .nav-link {
-      color: #FFFFFF;
-      transition: color 0.3s ease;
-    }
-    .navbar-custom .nav-link:hover {
-      color: #4DBDEB;
-    }
-    .navbar-custom .search-bar {
-      position: relative;
-      width: 100%;
-    }
-    .navbar-custom .form-control {
-      background-color: #DFEEEE;
-      color: #4DBDEB;
-      border-radius: 25px;
-      padding-left: 40px;
-      border: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .navbar-custom .form-control:focus {
-      background-color: #FFFFFF;
-      box-shadow: 0 0 8px rgba(77, 189, 235, 0.8);
-      color: #4DBDEB;
-    }
-    .navbar-custom .search-bar .search-icon {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
-      font-size: 18px;
-      color: #4DBDEB;
-    }
-  
-    /* Tarjetas de películas */
-    .movie-card {
-      background-color: #DFEEEE;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .movie-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    }
-    .movie-card img {
-      width: 100%;
-      height: auto;
-    }
-    .movie-info {
-      padding: 15px;
-      color: #4DBDEB;
-    }
-    .movie-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #1a5276;
-      margin-bottom: 10px;
-    }
-    .movie-meta {
-      font-size: 14px;
-      color: #4DBDEB;
-    }
-    .movie-details {
-      display: none;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #154360;
-    }
-    .movie-details.show {
-      display: block;
-    }
-    .btn-buy {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-      background-color: #FFE08C;
-      color: #424949;
-      border: none;
-      border-radius: 20px;
-      padding: 10px;
-      font-size: 14px;
-      text-transform: uppercase;
-      transition: background-color 0.3s ease;
-    }
-    .btn-buy:hover {
-      background-color: #FFD54F;
-    }
+  .search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+/* Icono de búsqueda (parte izquierda) */
+.search-icon {
+  background-color: #4e54c8;
+  color: #fff;
+  border: none;
+  border-radius: 30px 0 0 30px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+}
+
+/* Campo de entrada */
+.search-input {
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  outline: none;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  background-color: #f0f2ff;
+  box-shadow: inset 0 0 5px rgba(78, 84, 200, 0.5);
+}
+
+/* Botón de búsqueda */
+.search-btn {
+  background: linear-gradient(90deg, #ac80df, #7a549a);
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 30px 30px 0;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background: linear-gradient(90deg, #9a80b3, #cd61ff);
+  transform: translateY(-2px);
+}
+
+/* Sombras al interactuar */
+.search-container:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+/* Tarjetas de películas */
+.movie-card {
+  background-color: #DFEEEE;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 590px;
+  padding: 10px;
+}
+
+.movie-card.expanded {
+  height: 1050px; /* Nuevo tamaño cuando la tarjeta se expande */
+}
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+.movie-card img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover; /* Recorta las imágenes para que se ajusten sin deformarse */
+  border-bottom: 1px solid #ccc;
+}
+.movie-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a5276;
+  margin-bottom: 10px;
+}
+.movie-details {
+  display: none;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #154360;
+}
+.movie-details.show {
+  display: block;
+}
+.btn-buy {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #9a80b3, #cd61ff);
+  color: #fcffff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+.btn-buy:hover {
+  background-color: #FFD54F;
+}
+
   </style>
-  
 </head>
 <body>
-  <!-- Barra de navegación -->
-  <nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Cines Independientes</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="cartelera.html">Cartelera</a></li>
-          <li class="nav-item"><a class="nav-link" href="verification.html">Iniciar Sesión</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-        </ul>
-        <div class="input-group">
-          <input type="text" class="form-control" id="searchQuery" placeholder="Ingresa título o palabras clave">
-          <button class="btn btn-secondary" id="searchButton">Buscar</button>
+  <div id="navigation"></div> 
+    <!-- Header -->
+  <div class="container mt-5">
+    <h1>🎬 Cartelera de Películas</h1>
+
+    <!-- Barra de Búsqueda -->
+<div class="search-bar container mt-4">
+  <div class="input-group search-container">
+    <span class="input-group-text search-icon" id="searchIcon">
+      <i class="fas fa-search"></i>
+    </span>
+    <input type="text" class="form-control search-input" id="searchQuery" placeholder="Busca tus películas favoritas">
+    <button class="btn search-btn" id="searchButton">
+      <i class="fas fa-search"></i> Buscar
+    </button>
+  </div>
+</div>
+
+<br>
+    <!-- Movie Cards -->
+    <div id="movies-container" class="row g-4"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="movieDetailsModal" tabindex="-1" aria-labelledby="movieDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="movieDetailsModalLabel">Detalles de la Película</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalMovieDetails"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
-  </nav>
-
-  <!-- Contenido de la página -->
-  <div class="container mt-5">
-    <h1 class="text-center text-white mb-4">Cartelera de Películas</h1>
-    <div id="movies-container" class="row g-4"></div>
   </div>
 
   <script>
@@ -161,11 +195,9 @@
       movies.forEach(movie => {
         const col = document.createElement('div');
         col.className = 'col-md-4 col-lg-3';
-  
-        const detailsId = `details-${movie.name.replace(/\s+/g, '-')}`;
-  
+ 
         col.innerHTML = `
-          <div class="card movie-card">
+          <div class="card movie-card" Id=${movie._id}>
             <img src="${movie.image || 'https://via.placeholder.com/300x450'}" alt="${movie.name}" class="card-img-top" height="300">
             <div class="movie-info">
               <h2 class="movie-title">${movie.name}</h2>
@@ -173,39 +205,38 @@
                 <span class="badge bg-success">${movie.rating || 'A'}</span>
                 <span>${movie.duration || 120} mins</span>
               </p>
-              <button class="btn btn-primary btn-details" data-details="${detailsId}">Ver detalles</button>
-              <div id="${detailsId}" class="movie-details">
-                <p><strong>Director:</strong> ${movie.director || 'Desconocido'}</p>
-                <p><strong>Año:</strong> ${movie.year || 'N/A'}</p>
-                <p><strong>Sinopsis:</strong> ${movie.sinopsis || 'No disponible'}</p>
+              <button class="btn btn-outline-primary btn-sm mb-2" onclick="mostrarDetalles('${movie.name}', '${movie.director}', '${movie.year}', '${movie.sinopsis}')">Ver detalles</button>
+              <button class="btn btn-buy" onclick="toggleShowTimes('${movie._id}')">Seleccionar Horario y Fecha</button>
+              <div class="show-times" id="show-times-${movie._id}">
+                <ul id="show-list-${movie._id}">
+                  <!-- Aquí se insertarán las funciones -->
+                </ul>
               </div>
-              <button class="btn btn-buy">Comprar boletos</button>
             </div>
           </div>
         `;
   
         moviesContainer.appendChild(col);
       });
-  
-      // Agregar eventos para mostrar y ocultar detalles
-      const buttons = document.querySelectorAll('.btn-details');
-      buttons.forEach(button => {
-        const detailsId = button.getAttribute('data-details');
-        const detailsElement = document.getElementById(detailsId);
-  
-        button.addEventListener('mouseover', () => {
-          detailsElement.classList.add('show');
-        });
-  
-        button.addEventListener('mouseout', () => {
-          detailsElement.classList.remove('show');
-        });
-      });
     }
   
+     
+    function mostrarDetalles(name, director, year, sinopsis) {
+      const modalDetails = document.getElementById('modalMovieDetails');
+      modalDetails.innerHTML = `
+        <h5>${name}</h5>
+        <p><strong>Director:</strong> ${director || 'Desconocido'}</p>
+        <p><strong>Año:</strong> ${year || 'N/A'}</p>
+        <p><strong>Sinopsis:</strong> ${sinopsis || 'No disponible'}</p>
+        
+      `;
+      const modal = new bootstrap.Modal(document.getElementById('movieDetailsModal'));
+      modal.show();
+    }
     function buscarPeliculas() {
       const query = document.getElementById('searchQuery').value.toLowerCase();
       const filteredMovies = allMovies.filter(movie =>
+      movie.gender.toLowerCase().includes(query) ||
         movie.name.toLowerCase().includes(query) || 
         (movie.sinopsis && movie.sinopsis.toLowerCase().includes(query))
       );
@@ -224,7 +255,42 @@
   
     // Cargar las películas al cargar la página
     cargarPeliculas();
+
+    // Function to fetch and display shows
+    async function fetchShows(movieId) {
+      try {
+        const response = await fetch(`http://localhost:3000/Shows/movie_Id?movie_id=${movieId}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching shows: ${response.statusText}`);
+        }
+    
+        const shows = await response.json();
+        const showList = document.getElementById(`show-list-${movieId}`);
+        showList.innerHTML = shows.map(show => `
+          <li>
+            Sala: ${show.room_name}, Hora: ${new Date(show.start).toLocaleString()}, Precio: $${show.price}
+            <button class="btn btn-sm btn-success" data-show='${JSON.stringify(show)}'>Comprar</button>
+          </li>
+        `).join('');
+      } catch (error) {
+        console.error('Error fetching shows:', error);
+      }
+
+      
+    }
+
+    function toggleShowTimes(movieId) {
+      const showTimesDiv = document.getElementById(`show-times-${movieId}`);
+      const movieCard = document.querySelector(`.movie-card[Id='${movieId}']`);
+
+      if (showTimesDiv.style.display === 'none' || !showTimesDiv.style.display) {
+        fetchShows(movieId);
+        showTimesDiv.style.display = 'block';
+        movieCard.classList.add('expanded');
+      } else {
+        showTimesDiv.style.display = 'none';
+        movieCard.classList.remove('expanded');
+      }
+    }
   </script>
-  
-</body>
-</html>
+</body
