@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* Header */
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      font-weight: bold;
+      color: #343a40;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      border: 3px solid #6610f2;
+      border-radius: 15px;
+      outline: 5px solid rgba(102, 16, 242, 0.2); /* Línea exterior */
+      outline-offset: 5px; /* Espaciado entre bordes */
+      background: #f8f9fa;
+    }
+
+/* General */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #bababa;
+  }
+  
+  /* Navbar personalizado */
+  .navbar-custom {
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+  }
+  
+  .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Separación entre el icono y el texto */
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #ffe08c;
+    transform: scale(1.1);
+  }
+  
+  /* Subrayado animado en hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffe08c;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Separadores entre enlaces */
+  .separator {
+    width: 1px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 15px;
+    align-self: center;
+  }
+  
+  /* Hover para el navbar */
+  .navbar-custom:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
