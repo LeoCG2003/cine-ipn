@@ -28,14 +28,17 @@
     document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault(); // Prevent the default form submission
     
-      const User_name = document.getElementById("user").value;
-      const Password = document.getElementById("password").value;
+      const jsonPayload = {
+        user: document.getElementById('user').value, // Username field
+        password: document.getElementById('password').value, // Password field
+      };
     
       try {
-        const response = await fetch('http://localhost:3000/admin-data', {
+        const response = await fetch('http://localhost:3000/verification', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ User_name, Password }),
+          body: JSON.stringify(jsonPayload),
+
         });
     
         const result = await response.json();

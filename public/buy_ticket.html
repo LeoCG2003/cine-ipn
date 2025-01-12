@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartelera de Películas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+
+    /* Tarjetas de películas */
+
+    .main-layout {
+    display: flex;
+    justify-content: space-between; /* Add space between the elements */
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px; /* Space between the elements */
+    padding: 20px;
+    }
+    
+    /* Style for the container section */
+    .container {
+    flex: 1; /* Take available space */
+    padding: 10px;
+
+    }
+    
+    /* Style for the room section */
+    .room {
+    flex: 1; /* Take available space */
+    padding: 10px;
+    }
+    body {
+        background-color: #242333;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: 'Lato', 'sans-serif';
+      }
+    .movie-card {
+      background-color: #DFEEEE;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .movie-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    .movie-card img {
+      width: 100%;
+      height: auto;
+    }
+    .movie-info {
+      padding: 15px;
+      color: #4DBDEB;
+    }
+    .movie-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a5276;
+      margin-bottom: 10px;
+    }
+    .movie-meta {
+      font-size: 14px;
+      color: #4DBDEB;
+    }
+    .movie-details {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #154360;
+    }
+    .movie-details.show {
+      display: block;
+    }
+    .btn-buy {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      background-color: #FFE08C;
+      color: #424949;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease;
+    }
+
+    .screen {
+        background-color: #fff;
+        height: 100px;
+        width: 50%;
+        margin: 15px 0;
+        transform: rotateX(-45deg);
+        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.75);
+      }
+    .seat {
+        background-color: #d3d3e2;
+        height: 30px;
+        width: 30px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin: 2px;
+    }
+      
+      .seat.available {
+        background-color: #d3d3e2; /* Light green */
+      }
+      
+      .seat.unavailable {
+        background-color: #ff696100; /* Red */
+      }
+      
+      .seat.reserved {
+        background-color: #ffcc00; /* Yellow */
+      }
+      
+      .seat-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+  </style>
+  
+</head>
+<body>
+
+  <!-- Contenido de la página -->
+  <div class="container mt-5">
+    <div id="movies-container" class="row g-4"></div>
+  </div>
+  <div class="room">
+    <div class="screen"></div>
+    <div id="seats-container"></div>
+    <button type="button" id="btn1" class="btn btn-buy">Comprar</button>
+  </div>
+
+  <script>
+    const showData = localStorage.getItem('show_var');
+
+      // Parse the JSON string back into a JavaScript object
+      const show = JSON.parse(showData);
+    
+      // Now you can access properties like movie_name
+
+
+    const movie_name = show.movie_name;
+    const apiUrl = `http://localhost:3000/peliculas/moviesByName?MoviesByName=${movie_name}`; // Cambiar al puerto correcto si es necesario
+    
+    let allMovies = [];
+  
+    async function cargarPeliculas() {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        allMovies = await response.json(); // Guardar todas las películas
+        mostrarPeliculas(allMovies); // Mostrar todas las películas inicialmente
+      } catch (error) {
+        console.error('Error al cargar las películas:', error);
+      }
+    }
+    function mostrarPeliculas(movies) {
+      const moviesContainer = document.getElementById('movies-container');
+      moviesContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar las películas
+  
+      
+      movies.forEach(movie => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 col-lg-3';
+  
+        const detailsId = `details-${movie.name.replace(/\s+/g, '-')}`;
+  
+        col.innerHTML = `
+          <div class="card movie-card" Id=${movie._id}>
+            <img src="${movie.image || 'https://via.placeholder.com/300x450'}" alt="${movie.name}" class="card-img-top" height="300">
+            <div class="movie-info">
+              <h2 class="movie-title">${movie.name}</h2>
+              <p class="movie-meta">
+                <span class="badge bg-success">${movie.rating || 'A'}</span>
+                <span>${movie.duration || 120} mins</span>
+              </p>
+              <button class="btn btn-primary btn-details" data-details="${detailsId}">Ver detalles</button>
+              <div id="${detailsId}" class="movie-details">
+                <p><strong>Director:</strong> ${movie.director || 'Desconocido'}</p>
+                <p><strong>Año:</strong> ${movie.year || 'N/A'}</p>
+                <p><strong>Sinopsis:</strong> ${movie.sinopsis || 'No disponible'}</p>
+              </div>
+            </div>
+          </div>
+        `;
+  
+        moviesContainer.appendChild(col);
+      });
+  
+      // Agregar eventos para mostrar y ocultar detalles
+      const buttons = document.querySelectorAll('.btn-details');
+      buttons.forEach(button => {
+        const detailsId = button.getAttribute('data-details');
+        const detailsElement = document.getElementById(detailsId);
+  
+        button.addEventListener('mouseover', () => {
+          detailsElement.classList.add('show');
+        });
+  
+        button.addEventListener('mouseout', () => {
+          detailsElement.classList.remove('show');
+        });
+      });
+    }
+  
+    // Cargar las películas al cargar la página
+    cargarPeliculas();
+    const seats = show.seats;
+
+    function renderSeats(seats) {
+        const container = document.getElementById('seats-container');
+        if (!container) {
+            console.error('Target container not found');
+            return;
+        }
+    
+        let rows = '';
+        const groupedSeats = seats.reduce((acc, seat) => {
+            if (!acc[seat.row]) acc[seat.row] = [];
+            acc[seat.row].push(seat);
+            return acc;
+        }, {});
+    
+        for (const row in groupedSeats) {
+            let rowHTML = `<div class="seat-row">`;
+            groupedSeats[row].forEach((seat) => {
+                let seatClass = 'seat';
+                if (seat.state === 0) seatClass += ' unavailable';
+                else if (seat.state === 1) seatClass += ' available';
+                else if (seat.state === 2) seatClass += ' reserved';
+    
+                rowHTML += `<div class="${seatClass}" data-row="${seat.row}" data-column="${seat.column}"></div>`;
+                
+            });
+            rowHTML += '</div>';
+            rows += rowHTML;
+            
+
+        }
+    
+        container.innerHTML = rows;
+    
+        // Add click event listeners to each seat
+        const seatElements = container.querySelectorAll('.seat');
+        seatElements.forEach((seatElement) => {
+            seatElement.addEventListener('click', () => {
+                const row = parseInt(seatElement.getAttribute('data-row'));
+                const column = parseInt(seatElement.getAttribute('data-column'));
+    
+                // Find the clicked seat in the seats array and toggle its state
+                const clickedSeat = seats.find(seat => seat.row === row && seat.column === column);
+                if (clickedSeat) {
+                    clickedSeat.state = clickedSeat.state === 1 ? 2 : 1; // Toggle state between 1 and 2
+                    renderSeats(seats); // Re-render seats
+                }
+
+            });
+        });
+    }
+    
+    // Example toggleSeat function for reference
+    function toggleSeat(seat) {
+        seat.state = seat.state === 2 ? 1 : 2; 
+        renderSeats(seats);
+    }
+    
+    // Initial render
+    renderSeats(seats);
+    
+    
+    $(document).ready(function () {
+        // When the button is clicked, save the seat data
+        $("#btn1").click(function () {
+            localStorage.clear();
+    
+            const reservedSeats = seats; // Make sure this is the seats array, not a function
+            localStorage.setItem('show', show._id); // Store the show ID if needed
+            console.log(movie_name);
+            localStorage.setItem('movie_name', movie_name);
+    
+            // Store the reserved seats array in localStorage as a JSON string
+            localStorage.setItem('reserved_seats', JSON.stringify(seats));
+    
+            window.location.href = "payment.html"; // Redirect to payment page
+        });
+    });
+    
+    
+
+
+  </script>
+</body>
+</html>

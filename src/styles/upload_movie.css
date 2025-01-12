@@ -1,3 +1,47 @@
+@media (max-width: 768px) {
+    .content {
+      flex-direction: column; /* Stack dropzone and form vertically */
+      gap: 15px;
+      align-items: center;
+    }
+  
+    .dropzone {
+      width: 250px;
+      height: 300px;
+    }
+  
+    .info-container {
+      width: 100%; /* Expand to full width */
+    }
+  
+    .info-container input[type="text"] {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .info-container input[type="submit"] {
+      font-size: 14px;
+      padding: 8px 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dropzone {
+      width: 200px;
+      height: 250px;
+    }
+  
+    .info-container input[type="text"] {
+      font-size: 12px;
+      padding: 6px;
+    }
+  
+    .info-container input[type="submit"] {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  }
+  
 /* Global Styles */
 * {
     margin: 0;

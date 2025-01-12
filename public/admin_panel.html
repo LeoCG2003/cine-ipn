@@ -21,8 +21,7 @@
       <p id="admin_name">Leonel Carrillo Gutierrez</p>
       <button type="button" id="btn1" class="btn">Subir película</button>
       <button type="button" id="btn2" class="btn">Crear función</button>
-      <button type="button" id="btn3" class="btn">Administrar funciones</button>
-      <button type="button" id="btn4" class="btn">Editar funciones</button>
+      <button type="button" id="btn3" class="btn">Administrar peliculas</button>
       <button type="button" id="btn5" class="btn">Crear sala</button>
       <button type="button" id="btn6" class="btn">Crear nuevo boleto</button>
     </form>
@@ -47,6 +46,15 @@
         $("#dynamicContent").load("Crear_funcion.html");
       });
     });
+    
+    $(document).ready(function () {
+      // Load content when "Subir película" button is clicked
+      $("#btn3").click(function () {
+        console.log('bnt3')
+        $("#dynamicContent").load("CRUD_movies.html");
+      });
+    });
+
     $(document).ready(function () {
       // Load content when "Subir película" button is clicked
       $("#btn5").click(function () {

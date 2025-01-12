@@ -17,6 +17,9 @@ const getPeliculas = require('./routes/getPeliculas');
 const ticket = require('./routes/NewTicket');
 const function_info = require('./routes/function_info');
 const show = require('./routes/NewShow');
+const shows = require('./routes/get_shows');
+const crud_mv = require('./routes/CRUD_mv');
+const payment = require('./routes/payment_proccess');
 
 
 const upload = multer();
@@ -39,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Routes
-app.use('/admin-data', verification);
+app.use('/verification', verification);
 app.use('/upload-movie', uploadMovieRoute);
 app.use('/owner-data', owner_verification);
 app.use('/cinema-data', New_Cinema);
@@ -51,7 +54,10 @@ app.use('/movie-info', info);
 app.use('/peliculas',getPeliculas);
 app.use('/ticket', ticket);
 app.use('/function-info',function_info);
-app.use('/Show', show);
+app.use('/Show', show); //function to create a new show
+app.use('/Shows', shows); //function to requests shows for the billboard
+app.use('/CRUD_mv', crud_mv);
+app.use('/payment', payment);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

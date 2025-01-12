@@ -87,3 +87,52 @@ body {
     font-size: 0.9em;
     color: #ccc;
 }
+
+@media (max-width: 768px) {
+    .cinema-billboard {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .billboard-header {
+      font-size: 1.5em;
+    }
+  
+    .billboard-lights span {
+      width: 12px;
+      height: 12px;
+    }
+  
+    .movie-title {
+      font-size: 1em;
+    }
+  
+    .movie-time {
+      font-size: 0.9em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cinema-billboard {
+      width: 95%;
+      padding: 10px;
+    }
+  
+    .billboard-header {
+      font-size: 1.2em;
+    }
+  
+    .billboard-lights span {
+      width: 10px;
+      height: 10px;
+    }
+  
+    .movie-title {
+      font-size: 0.9em;
+    }
+  
+    .movie-time {
+      font-size: 0.8em;
+    }
+  }
+  
